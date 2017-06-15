@@ -1,0 +1,8 @@
+{
+  "name": "fcc-weather",
+  "version": "1.0.0",
+  "description": "My freeCodeCamp local weather app project.",
+  "main": "index.js",
+  "author": "Jesse R Weigel",
+  "license": "MIT"
+}
