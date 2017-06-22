@@ -22,11 +22,12 @@ export default class extends React.Component {
 
   getWeather = () => {
     console.log(this.state)
+    const proxy = 'https://cors-anywhere.herokuapp.com/'
     const apiUrl =
       'https://api.darksky.net/forecast/a11ea556c96a39cda2299f14f1b9a94b/'
     const params = `${this.state.userLat},${this.state
       .userLon}?exclude=minutely,hourly,daily,alerts,flags`
-    getJSON(apiUrl + params).then(data => this.setState({ data }))
+    getJSON(proxy + apiUrl + params).then(data => this.setState({ data }))
   }
 
   render () {
