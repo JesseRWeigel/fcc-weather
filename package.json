@@ -4,5 +4,38 @@
   "description": "My freeCodeCamp local weather app project.",
   "main": "index.js",
   "author": "Jesse R Weigel",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "next": "beta",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "husky": "^0.13.4",
+    "lint-staged": "^4.0.0",
+    "prettier": "^1.4.4",
+    "standard": "^10.0.2"
+  },
+  "scripts": {
+  "dev": "node server.js",
+  "build": "next build && git rev-parse HEAD > .next/BUILD_ID",
+  "start": "NODE_ENV=production node server.js",
+  "lint": "prettier 'utils/**/*.js' 'static/js/**/*.js' 'components/**/*.js' 'pages/**/*.js' '*.js' --write --single-quote --no-semi && standard --fix",
+  "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write --single-quote --no-semi",
+      "standard --fix",
+      "git add"
+    ]
+  },
+  "standard": {
+    "globals": [
+      "fetch",
+      "$"
+    ],
+    "parser": "babel-eslint"
+  }
 }
