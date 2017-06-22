@@ -19,7 +19,7 @@
   },
   "scripts": {
   "dev": "next",
-  "build": "next build && git rev-parse HEAD > .next/BUILD_ID",
+  "build": "next build && next export",
   "start": "next start",
   "lint": "prettier 'utils/**/*.js' 'static/js/**/*.js' 'components/**/*.js' 'pages/**/*.js' '*.js' --write --single-quote --no-semi && standard --fix",
   "precommit": "lint-staged"
@@ -35,6 +35,9 @@
     "globals": [
       "fetch"
     ],
-    "parser": "babel-eslint"
+    "parser": "babel-eslint",
+    "ignore": [
+      "/out/*"
+    ]
   }
 }
