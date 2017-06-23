@@ -11,6 +11,14 @@ export default class Layout extends Component {
 
         {children}
 
+        <style jsx global>
+          {`
+            body {
+              margin: 0;
+              padding: 0;
+            }
+          `}
+        </style>
       </div>
     )
   }

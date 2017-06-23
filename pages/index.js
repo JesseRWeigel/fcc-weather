@@ -5,8 +5,12 @@ import { getJSON } from '../utils/fetch'
 export default class extends React.Component {
   state = {
     data: [],
+    temp: null,
+    tempF: null,
+    tempC: null,
     userLat: null,
-    userLong: null
+    userLong: null,
+    bgImage: 'https://unsplash.it/3000/2000?image=1069'
   }
 
   getLocation = () => {
@@ -17,18 +21,52 @@ export default class extends React.Component {
       })
       this.getWeather()
     })
-    console.log('click!!!!')
   }
 
   getWeather = () => {
-    console.log(this.state)
     const proxy = 'https://cors-anywhere.herokuapp.com/'
     const apiUrl =
       'https://api.darksky.net/forecast/a11ea556c96a39cda2299f14f1b9a94b/'
     const params = `${this.state.userLat},${this.state
       .userLon}?exclude=minutely,hourly,daily,alerts,flags`
-    getJSON(proxy + apiUrl + params).then(data => this.setState({ data }))
+    getJSON(proxy + apiUrl + params)
+      .then(data => this.setState({ data }))
+      .then(data =>
+        this.setState({
+          temp: this.state.data.currently.temperature,
+          bgImage: this.getBgImage()
+        })
+      )
   }
+
+  getBgImage = () => {
+    const images = {
+      'clear-day': 'https://unsplash.it/3000/2000?image=215',
+      'clear-night': 'https://unsplash.it/3000/2000?image=974',
+      rain: 'https://unsplash.it/3000/2000?image=680',
+      snow: 'https://unsplash.it/3000/2000?image=726',
+      sleet: 'https://unsplash.it/3000/2000?image=1069',
+      wind: 'https://unsplash.it/3000/2000?image=525',
+      fog: 'https://unsplash.it/3000/2000?image=1054',
+      cloudy: 'https://unsplash.it/3000/2000?image=1055',
+      'partly-cloudy-day': 'https://unsplash.it/3000/2000?image=1056',
+      'partly-cloudy-night': 'https://unsplash.it/3000/2000?image=857'
+    }
+
+    this.setState({ bgImage: images[this.state.data.currently.icon] })
+  }
+
+  celsius = () => {
+    const temp = this.state.data.currently.temperature
+    const tempC = (temp - 32) / 1.8
+    this.setState({ temp: tempC, tempF: temp })
+  }
+
+  fahrenheit = () => {
+    this.setState({ temp: this.state.tempF })
+  }
+
+  bgImage = () => {}
 
   render () {
     return (
@@ -36,14 +74,35 @@ export default class extends React.Component {
         title="Jesse's React Weather App"
         description='Get the weather in your location!'
       >
-        <div>
-          <h1>Jesse's React Weather App</h1>
-          <h3>
-            {this.state.data.hasOwnProperty('currently')
-              ? this.state.data.currently.summary
-              : 'Press the button'}
-          </h3>
-          <button onClick={this.getLocation}>What's the Weather?</button>
+        <div
+          style={{
+            backgroundImage: `url(${this.state.bgImage})`,
+            width: '100vw',
+            height: '100vh',
+            position: 'absolute',
+            backgroundSize: 'cover',
+            color: '#fff',
+            display: 'flex',
+            alignItems: 'center'
+          }}
+        >
+          <div style={{ maxWidth: '50%', margin: '0 auto' }}>
+            <h1>Jesse's React Weather App</h1>
+            <h3>
+              {this.state.data.hasOwnProperty('currently')
+                ? this.state.data.currently.summary
+                : 'Press the button'}
+            </h3>
+            <div id='temp'>
+              {this.state.data.hasOwnProperty('currently')
+                ? 'Current temp: ' + this.state.temp
+                : ''}
+            </div>
+            <div onClick={this.celsius}>Celsius</div>
+            <div onClick={this.fahrenheit}>Fahrenheit</div>
+            <button onClick={this.getLocation}>What's the Weather?</button>
+          </div>
+
         </div>
       </Layout>
     )
