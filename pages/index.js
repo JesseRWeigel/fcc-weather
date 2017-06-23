@@ -10,7 +10,7 @@ export default class extends React.Component {
     tempC: null,
     userLat: null,
     userLong: null,
-    bgImage: 'https://unsplash.it/3000/2000?image=1069'
+    bgImage: 'https://unsplash.it/2000/1500?image=1069'
   }
 
   getLocation = () => {
@@ -33,7 +33,7 @@ export default class extends React.Component {
       .then(data => this.setState({ data }))
       .then(data =>
         this.setState({
-          temp: this.state.data.currently.temperature,
+          temp: Math.round(this.state.data.currently.temperature),
           bgImage: this.getBgImage()
         })
       )
@@ -41,32 +41,30 @@ export default class extends React.Component {
 
   getBgImage = () => {
     const images = {
-      'clear-day': 'https://unsplash.it/3000/2000?image=215',
-      'clear-night': 'https://unsplash.it/3000/2000?image=974',
-      rain: 'https://unsplash.it/3000/2000?image=680',
-      snow: 'https://unsplash.it/3000/2000?image=726',
-      sleet: 'https://unsplash.it/3000/2000?image=1069',
-      wind: 'https://unsplash.it/3000/2000?image=525',
-      fog: 'https://unsplash.it/3000/2000?image=1054',
-      cloudy: 'https://unsplash.it/3000/2000?image=1055',
-      'partly-cloudy-day': 'https://unsplash.it/3000/2000?image=1056',
-      'partly-cloudy-night': 'https://unsplash.it/3000/2000?image=857'
+      'clear-day': 'https://unsplash.it/2000/1500?image=215',
+      'clear-night': 'https://unsplash.it/2000/1500?image=974',
+      rain: 'https://unsplash.it/2000/1500?image=680',
+      snow: 'https://unsplash.it/2000/1500?image=726',
+      sleet: 'https://unsplash.it/2000/1500?image=1069',
+      wind: 'https://unsplash.it/2000/1500?image=525',
+      fog: 'https://unsplash.it/2000/1500?image=1068',
+      cloudy: 'https://unsplash.it/2000/1500?image=1055',
+      'partly-cloudy-day': 'https://unsplash.it/2000/1500?image=1056',
+      'partly-cloudy-night': 'https://unsplash.it/2000/1500?image=857'
     }
 
-    this.setState({ bgImage: images[this.state.data.currently.icon] })
+    return images[this.state.data.currently.icon]
   }
 
   celsius = () => {
-    const temp = this.state.data.currently.temperature
-    const tempC = (temp - 32) / 1.8
+    const temp = Math.round(this.state.data.currently.temperature)
+    const tempC = Math.round((temp - 32) / 1.8)
     this.setState({ temp: tempC, tempF: temp })
   }
 
   fahrenheit = () => {
     this.setState({ temp: this.state.tempF })
   }
-
-  bgImage = () => {}
 
   render () {
     return (
@@ -76,7 +74,8 @@ export default class extends React.Component {
       >
         <div
           style={{
-            backgroundImage: `url(${this.state.bgImage})`,
+            backgroundImage: `url(${this.state.bgImage ||
+              'https://unsplash.it/2000/1500?image=1069'})`,
             width: '100vw',
             height: '100vh',
             position: 'absolute',
